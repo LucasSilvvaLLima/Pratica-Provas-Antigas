@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div_quiosque">
+        <h2>---------Abertura do Quiosque---------</h2>
+        <p>Insira o valor da água de Coco engarrafada: <input type="text" id="in_engarrafada"></p>
+        <p>Insira o valor do Coco fechado: <input type="text" id="in_coco_fechado"> </p>
+        <button onclick="quiosque()">Abrir o quiosque</button><br>
+    </div>
+    <div id="div_estoque"><h2>---------Estoque Inicial---------</h2></div>
+    <div id="div_venda">
+        <h2>---------Registro da Operação de Vendas---------</h2>
+        <p>Entre com a quantidade vendida: <input type="text" id="in_qtd_produto_venda">
+            Informe o Produto vendido:
+            <select name="" id="sel_produto">
+                <option value="Coco fechado">Coco fechado</option>
+                <option value="Água engarrafada">Água engarrafada</option>
+            </select>
+            <button onclick="venda()">Registrar Venda</button>
+            <button onclick="encerrar()">Encerrar Tudo</button>
+        </p>
+    </div>
+</body>
+
+</html>
+<script>
+    var agua_engarrafada = 0
+    var coco_fechado = 0
+    var estoque_garrafas = 0
+    var estoque_cocos = 0
+    var total_venda_cocos = 0
+    var total_venda_garrafas = 0
+
+    function quiosque() {
+        // div_quiosque.innerHTML = ""
+        agua_engarrafada = Number(in_engarrafada.value)
+        coco_fechado = Number(in_coco_fechado.value)
+        var valida_agua_engarrafada = agua_engarrafada >= 100
+        var valida_coco = coco_fechado >= 200
+
+        var valida_mais_agua_engarrafada = agua_engarrafada >= 100 && agua_engarrafada <= 1000
+        var valida_mais_coco = coco_fechado >= 200 && coco_fechado <= 2000
+
+        if (!valida_agua_engarrafada || !valida_coco) {
+            if (!valida_agua_engarrafada) {
+                div_quiosque.innerHTML += "Com essa quantidade de Água engarrafada não dá para abrir o quiosque <br>"
+            }else {
+                div_quiosque.innerHTML += "Com essa quantidade de Coco fechado não dá para abrir o quiosque"
+            }
+        } else {
+            if (valida_mais_agua_engarrafada || valida_mais_coco) {
+                if (valida_mais_agua_engarrafada) {
+                    div_venda.innerHTML += "Engarrafe mais água de coco <br>"
+                }
+                if (valida_mais_coco) {
+                    div_venda.innerHTML += "Compre mais cocos <br>"
+                }
+                estoque_garrafas += agua_engarrafada
+                estoque_cocos += coco_fechado
+                div_estoque.innerHTML += `Água engarrafada: ${estoque_garrafas} <br> Cocofechado: ${estoque_cocos} <br>`
+            }
+        }
+    }
+    function venda() {
+        var qtd_venda = Number(in_qtd_produto_venda.value)
+        var produto_vendido = sel_produto.value
+
+        if (produto_vendido == "Coco fechado") {
+            estoque_cocos -= qtd_venda
+            total_venda_cocos += qtd_venda
+            div_venda.innerHTML += `Com a venda de ${qtd_venda} de ${produto_vendido} o saldo no estoque é de ${estoque_cocos}`
+        } else {
+            estoque_garrafas -= qtd_venda
+            total_venda_garrafas += qtd_venda
+            div_venda.innerHTML += `Com a venda de ${qtd_venda} de ${produto_vendido} o saldo no estoque é de ${estoque_cocos}`
+
+        }
+
+    }
+    function encerrar(){
+        div_venda.innerHTML = ""
+        var porcentagem_cocos = (total_venda_cocos/estoque_cocos) * 100
+        var porcentagem_garrafas = (total_venda_garrafas/estoque_garrafas) * 100
+        `
+        Vendas de Água engarrafada<br>
+        Saldo de produto no estoque: ${estoque_garrafas}<br> 
+
+        Quantidade de vendas: ${total_venda_garrafas}<br>
+
+        Porcentagem das vendas: ${porcentagem_garrafas}% <br><br>
+
+        Vendas de Coco fechado <br> 
+
+        Saldo de produto no estoque: ${estoque_cocos} <br> 
+
+        Quantidade de vendas: ${total_venda_cocos}<br>
+
+        Porcentagem das vendas: ${porcentagem_cocos}<br><br>
+        `
+
+    }
+</script>
